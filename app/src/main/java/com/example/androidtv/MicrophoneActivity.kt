@@ -24,7 +24,14 @@ class MicrophoneActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
-        var isOn = false
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        var isOn = preferences.getBoolean(deviceName, false)
+
+        if(isOn){
+            image.setImageResource(R.drawable.green)
+        }else{
+            image.setImageResource(R.drawable.red)
+        }
 
         when(deviceName) {
 
@@ -33,8 +40,30 @@ class MicrophoneActivity : AppCompatActivity() {
                     AlertDialog.Builder(this)
                         .setTitle("Microphone Control")
                         .setMessage("Do you want to toggle this microphone?")
-                        .setPositiveButton("Yes") { _, _ ->
+                        .setPositiveButton("Confirm") { _, _ ->
+
                             isOn = !isOn
+                            val edit = preferences.edit()
+
+                            if(isOn){
+                                if(deviceName == "Microphone"){
+                                    edit.putBoolean("Microphone 2", false)
+                                    edit.putBoolean("Microphone 3", false)
+                                }
+
+                                if(deviceName == "Microphone 2"){
+                                    edit.putBoolean("Microphone", false)
+                                    edit.putBoolean("Microphone 3", false)
+                                }
+
+                                if(deviceName == "Microphone 3"){
+                                    edit.putBoolean("Microphone", false)
+                                    edit.putBoolean("Microphone 2", false)
+                                }
+                            }
+
+                            edit.putBoolean(deviceName, isOn).apply()
+
                             if (isOn) {
                                 image.setImageResource(R.drawable.green)
                             } else {

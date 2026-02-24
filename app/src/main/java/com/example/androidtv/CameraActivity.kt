@@ -26,6 +26,15 @@ class CameraActivity : AppCompatActivity() {
 
         var isOn = false
 
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        isOn = preferences.getBoolean(deviceName, false)
+
+        if(isOn){
+            image.setImageResource(R.drawable.green)
+        }else{
+            image.setImageResource(R.drawable.red)
+        }
+
         when(deviceName) {
             "Camera", "Camera 2", "Camera 3" -> {
                 toggleCameraButton.setOnClickListener {
@@ -33,7 +42,29 @@ class CameraActivity : AppCompatActivity() {
                         .setTitle("Camera Control")
                         .setMessage("Do you want to toggle this camera?")
                         .setPositiveButton("Yes") { _, _ ->
+
                             isOn = !isOn
+                            val edit = preferences.edit()
+
+                            if(isOn){
+                                if(deviceName == "Camera"){
+                                    edit.putBoolean("Camera 2", false)
+                                    edit.putBoolean("Camera 3", false)
+                                }
+
+                                if(deviceName == "Camera 2"){
+                                    edit.putBoolean("Camera", false)
+                                    edit.putBoolean("Camera 3", false)
+                                }
+
+                                if(deviceName == "Camera 3"){
+                                    edit.putBoolean("Camera", false)
+                                    edit.putBoolean("Camera 2", false)
+                                }
+                            }
+
+                            edit.putBoolean(deviceName, isOn).apply()
+
                             if(isOn){
                                 image.setImageResource(R.drawable.green)
                             }else{
@@ -47,3 +78,4 @@ class CameraActivity : AppCompatActivity() {
     }
 }
 
+//funkcija da zameni if else statement

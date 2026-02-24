@@ -22,7 +22,14 @@ class KeyboardActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
-        var isOn = false
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        var isOn = preferences.getBoolean(deviceName, false)
+
+        if(isOn){
+            image.setImageResource(R.drawable.green)
+        }else{
+            image.setImageResource(R.drawable.red)
+        }
 
         when(deviceName) {
 
@@ -32,7 +39,29 @@ class KeyboardActivity : AppCompatActivity() {
                         .setTitle("Keyboard Control")
                         .setMessage("Do you want to toggle this keyboard?")
                         .setPositiveButton("Yes") { _, _ ->
+
                             isOn = !isOn
+                            val edit = preferences.edit()
+
+                            if(isOn){
+                                if(deviceName == "Keyboard"){
+                                    edit.putBoolean("Keyboard 2", false)
+                                    edit.putBoolean("Keyboard 3", false)
+                                }
+
+                                if(deviceName == "Keyboard 2"){
+                                    edit.putBoolean("Keyboard", false)
+                                    edit.putBoolean("Keyboard 3", false)
+                                }
+
+                                if(deviceName == "Keyboard 3"){
+                                    edit.putBoolean("Keyboard", false)
+                                    edit.putBoolean("Keyboard 2", false)
+                                }
+                            }
+
+                            edit.putBoolean(deviceName, isOn).apply()
+
                             if(isOn){
                                 image.setImageResource(R.drawable.green)
                             }else{

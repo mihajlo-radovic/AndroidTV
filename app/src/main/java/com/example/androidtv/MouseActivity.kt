@@ -22,7 +22,14 @@ class MouseActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
-        var isOn = false
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        var isOn = preferences.getBoolean(deviceName, false)
+
+        if(isOn){
+            image.setImageResource(R.drawable.green)
+        }else{
+            image.setImageResource(R.drawable.red)
+        }
 
         when(deviceName) {
 
@@ -32,7 +39,29 @@ class MouseActivity : AppCompatActivity() {
                         .setTitle("Mouse Control")
                         .setMessage("Do you want to toggle this mouse?")
                         .setPositiveButton("Yes") { _, _ ->
+
                             isOn = !isOn
+                            val edit = preferences.edit()
+
+                            if(isOn){
+                                if(deviceName == "Mouse"){
+                                    edit.putBoolean("Mouse 2", false)
+                                    edit.putBoolean("Mouse 3", false)
+                                }
+
+                                if(deviceName == "Mouse 2"){
+                                    edit.putBoolean("Mouse", false)
+                                    edit.putBoolean("Mouse 3", false)
+                                }
+
+                                if(deviceName == "Mouse 3"){
+                                    edit.putBoolean("Mouse", false)
+                                    edit.putBoolean("Mouse 2", false)
+                                }
+                            }
+
+                            edit.putBoolean(deviceName, isOn).apply()
+
                             if(isOn){
                                 image.setImageResource(R.drawable.green)
                             }else{

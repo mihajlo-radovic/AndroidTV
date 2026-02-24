@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/home_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="480dp"
-        android:layout_marginEnd="600dp"
+        android:layout_marginBottom="490dp"
+        android:layout_marginEnd="750dp"
         android:text="Available devices"
         android:textColor="@color/cardview_light_background"
         android:textStyle="bold" />
@@ -33,19 +33,42 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/card_item" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="850dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="490dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:contentDescription="Open Settings"
-        android:src="@drawable/ic_settings" />
+        app:icon="@drawable/ic_settings" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_device"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginStart="770dp"
+        android:layout_marginBottom="490dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:contentDescription="Add new device"
+        app:icon="@drawable/ic_plus"
+        tools:listItem="@layout/popup_menu"/>
+
+    <SearchView
+        android:id="@+id/search_devices"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="230dp"
+        android:layout_marginBottom="480dp"
+        android:layout_marginEnd="300dp"
+        android:queryHint="Search devices" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

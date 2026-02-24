@@ -1,5 +1,79 @@
 package com.example.androidtv
 
+
+/*
+
+settings button
+<ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="850dp"
+        android:layout_marginBottom="490dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:contentDescription="Open Settings"
+        android:src="@drawable/ic_settings" />
+
+
+        <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:contentDescription="Open Settings"
+        android:src="@drawable/ic_settings"/>
+
+        <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_button"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
+        android:contentDescription="Open Settings"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:text=""
+        app:icon="@drawable/ic_settings"
+        app:iconPadding="0dp"
+        app:iconGravity="textStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"/>
+
+add button
+<ImageButton
+        android:id="@+id/add_device"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginStart="770dp"
+        android:layout_marginBottom="490dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:contentDescription="Add new device"
+        android:src="@drawable/ic_plus"
+        tools:listItem="@layout/popup_menu"/>
+
+popup menu xml button
+<Button
+        android:id="@+id/add_new_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="300dp"
+        android:text="Add new device"
+        />
+ */
+
 /*
 Card view
 

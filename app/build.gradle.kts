@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.androidtv"
-        minSdk = 34
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -35,7 +35,6 @@ android {
         compose = true
     }
 }
-
 dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.ktx)

@@ -2,6 +2,101 @@ package com.example.androidtv
 
 
 /*
+old model class, companion object not needed anymore
+open class Model(val id: Int, val name: String, val image: Int, type: TypeENUM){
+    companion object{
+        fun addDevice(id: Int, name: String, type: TypeENUM): Model{
+            return when(type){
+                TypeENUM.CAMERA -> Camera(id, name, R.drawable.ic_action_name)
+                TypeENUM.MICROPHONE -> Microphone(id, name, R.drawable.ic_microphone)
+                TypeENUM.MOUSE -> Mouse(id, name, R.drawable.ic_mouse)
+                TypeENUM.KEYBOARD -> Keyboard(id, name, R.drawable.ic_keyboard)
+            }
+        }
+    }
+}
+
+
+old alert dialog for toggling the devices on/off, camera example(switch Camera text with other devices)
+when(deviceName) {
+            "Camera", "Camera 2", "Camera 3" -> {
+                toggleCameraButton.setOnClickListener {
+                    AlertDialog.Builder(this)
+                        .setTitle("Camera Control")
+                        .setMessage("Do you want to toggle this camera?")
+                        .setPositiveButton("Yes") { _, _ ->
+
+                            isOn = !isOn
+                            val edit = preferences.edit()
+
+                            if(isOn){
+                                if(deviceName == "Camera"){
+                                    edit.putBoolean("Camera 2", false)
+                                    edit.putBoolean("Camera 3", false)
+                                }
+
+                                if(deviceName == "Camera 2"){
+                                    edit.putBoolean("Camera", false)
+                                    edit.putBoolean("Camera 3", false)
+                                }
+
+                                if(deviceName == "Camera 3"){
+                                    edit.putBoolean("Camera", false)
+                                    edit.putBoolean("Camera 2", false)
+                                }
+                            }
+
+                            edit.putBoolean(deviceName, isOn).apply()
+
+                            if(isOn){
+                                image.setImageResource(R.drawable.green)
+                            }else{
+                                image.setImageResource(R.drawable.red)
+                            }
+                        }
+                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()
+                }
+            }
+        }
+
+old devices that were hardcoded in MainActivity onCreate
+
+list.add(Camera(1, "Camera", R.drawable.ic_action_name))
+        list.add(Microphone(2, "Microphone", R.drawable.ic_microphone))
+        list.add(Mouse(3, "Mouse", R.drawable.ic_mouse))
+        list.add(Keyboard(4, "Keyboard", R.drawable.ic_keyboard))
+
+        list.add(Camera(5, "Camera 2", R.drawable.ic_action_name))
+        list.add(Microphone(6, "Microphone 2", R.drawable.ic_microphone))
+        list.add(Mouse(7, "Mouse 2", R.drawable.ic_mouse))
+        list.add(Keyboard(8, "Keyboard 2", R.drawable.ic_keyboard))
+
+        list.add(Camera(9, "Camera 3", R.drawable.ic_action_name))
+        list.add(Microphone(10, "Microphone 3", R.drawable.ic_microphone))
+        list.add(Mouse(11, "Mouse 3", R.drawable.ic_mouse))
+        list.add(Keyboard(12, "Keyboard 3", R.drawable.ic_keyboard))
+
+
+old alert dialog from addDevicesDialog
+AlertDialog.Builder(this)
+            .setTitle("Add new device")
+            .setView(dialogView)
+            .setPositiveButton("Add"){_,_,->
+                val name = nameInput.text.toString()
+                val type = spinner.selectedItem as TypeENUM
+
+                if(name.isNotEmpty()){
+                    val newId = if (list.isEmpty()) 1 else list.maxOf { it.id } +1
+                    val newDevice = Model.addDevice(newId, name, type)
+
+                    list.add(newDevice)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .show()
+
+
 
 settings button
 <ImageButton

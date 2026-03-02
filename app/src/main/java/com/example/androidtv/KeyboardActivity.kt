@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class KeyboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,46 +28,33 @@ class KeyboardActivity : AppCompatActivity() {
             image.setImageResource(R.drawable.red)
         }
 
-        when(deviceName) {
+        toggleKeyboardButton.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Keyboard Control")
+                .setMessage("Do you want to toggle this keyboard?")
+                .setPositiveButton("Yes") { _, _ ->
 
-            "Keyboard", "Keyboard 2", "Keyboard 3" -> {
-                toggleKeyboardButton.setOnClickListener {
-                    AlertDialog.Builder(this)
-                        .setTitle("Keyboard Control")
-                        .setMessage("Do you want to toggle this keyboard?")
-                        .setPositiveButton("Yes") { _, _ ->
+                    isOn = !isOn
+                    val edit = preferences.edit()
 
-                            isOn = !isOn
-                            val edit = preferences.edit()
-
-                            if(isOn){
-                                if(deviceName == "Keyboard"){
-                                    edit.putBoolean("Keyboard 2", false)
-                                    edit.putBoolean("Keyboard 3", false)
-                                }
-
-                                if(deviceName == "Keyboard 2"){
-                                    edit.putBoolean("Keyboard", false)
-                                    edit.putBoolean("Keyboard 3", false)
-                                }
-
-                                if(deviceName == "Keyboard 3"){
-                                    edit.putBoolean("Keyboard", false)
-                                    edit.putBoolean("Keyboard 2", false)
-                                }
-                            }
-
-                            edit.putBoolean(deviceName, isOn).apply()
-
-                            if(isOn){
-                                image.setImageResource(R.drawable.green)
-                            }else{
-                                image.setImageResource(R.drawable.red)
+                    if(isOn){
+                        val allPreferences = preferences.all
+                        for ((key, value) in allPreferences){
+                            if (key != deviceName && value is Boolean){
+                                edit.putBoolean(key, false)
                             }
                         }
-                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()
+                    }
+
+                    edit.putBoolean(deviceName, isOn).apply()
+
+                    if(isOn){
+                        image.setImageResource(R.drawable.green)
+                    }else{
+                        image.setImageResource(R.drawable.red)
+                    }
                 }
-            }
+                .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()
         }
     }
 }

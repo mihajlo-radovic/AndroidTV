@@ -1,10 +1,7 @@
 package com.example.androidtv
 
-import android.R.attr.versionName
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 

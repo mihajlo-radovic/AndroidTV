@@ -66,7 +66,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginStart="230dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="490dp"
         android:layout_marginEnd="300dp"
         android:queryHint="Search devices" />
 

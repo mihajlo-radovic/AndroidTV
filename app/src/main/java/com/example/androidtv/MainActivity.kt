@@ -12,12 +12,14 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridView
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.tv.material3.ExperimentalTvMaterial3Api
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalTvMaterial3Api::class)
@@ -31,6 +33,9 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         gridView = findViewById(R.id.grid_view)
+        adapter = GridViewAdapter(this, list)
+        gridView.adapter = adapter
+
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
         settingsButton.setOnClickListener {
@@ -38,26 +43,10 @@ class MainActivity : ComponentActivity() {
             startActivity(intent)
         }
 
-        list.add(Camera(1, "Camera", R.drawable.ic_action_name))
-        list.add(Microphone(2, "Microphone", R.drawable.ic_microphone))
-        list.add(Mouse(3, "Mouse", R.drawable.ic_mouse))
-        list.add(Keyboard(4, "Keyboard", R.drawable.ic_keyboard))
-
-        list.add(Camera(5, "Camera 2", R.drawable.ic_action_name))
-        list.add(Microphone(6, "Microphone 2", R.drawable.ic_microphone))
-        list.add(Mouse(7, "Mouse 2", R.drawable.ic_mouse))
-        list.add(Keyboard(8, "Keyboard 2", R.drawable.ic_keyboard))
-
-        list.add(Camera(9, "Camera 3", R.drawable.ic_action_name))
-        list.add(Microphone(10, "Microphone 3", R.drawable.ic_microphone))
-        list.add(Mouse(11, "Mouse 3", R.drawable.ic_mouse))
-        list.add(Keyboard(12, "Keyboard 3", R.drawable.ic_keyboard))
-
-        adapter = GridViewAdapter(this, list)
-        gridView.adapter = adapter
-
         val addButton = findViewById<Button>(R.id.add_device)
         addButton.setOnClickListener { addDeviceDialog() }
+
+        fetchDevices()
 
         gridView.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = list[position]
@@ -103,45 +92,76 @@ class MainActivity : ComponentActivity() {
 
         spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, TypeENUM.values())
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle("Add new device")
             .setView(dialogView)
-            .setPositiveButton("Add"){_,_,->
-                val name = nameInput.text.toString()
-                val type = spinner.selectedItem as TypeENUM
+            .setPositiveButton("Add", null)
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .create()
 
-                if(name.isNotEmpty()){
-                    val newId = if (list.isEmpty()) 1 else list.maxOf { it.id } +1
-                    val newDevice = Model.addDevice(newId, name, type)
+        dialog.show()
 
-                    list.add(newDevice)
-                    adapter.notifyDataSetChanged()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val name = nameInput.text.toString()
+            val type = spinner.selectedItem as TypeENUM
+
+            if (name.isEmpty()){
+                nameInput.error = "Name required"
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch{
+                try {
+                    val response = DevicesClient.instance.createDevice(CreateDeviceRequest(name = name, type = type.name))
+                    if(response.isSuccessful){
+                        dialog.dismiss()
+                        fetchDevices()
+                    }else{
+                        Toast.makeText(this@MainActivity, "Error creating device", Toast.LENGTH_SHORT).show()
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    Toast.makeText(this@MainActivity, "Server error", Toast.LENGTH_SHORT).show()
+
                 }
             }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-            .show()
+        }
+    }
+    fun fetchDevices(){
+        lifecycleScope.launch {
+            try {
+                val response = DevicesClient.instance.getDevices()
+                if (response.isSuccessful) {
+                    val apiDevices = response.body()
+
+                    if (apiDevices != null){
+                        list.clear()
+                        for (device in apiDevices){
+                            val model = when(device.type){
+                                "CAMERA" -> Camera(device.id, device.name, R.drawable.ic_action_name)
+                                "MICROPHONE" -> Microphone(device.id, device.name, R.drawable.ic_microphone)
+                                "MOUSE" -> Mouse(device.id, device.name, R.drawable.ic_mouse)
+                                "KEYBOARD" -> Keyboard(device.id, device.name, R.drawable.ic_keyboard)
+                                else -> null
+                            }
+                            model?.let { list.add(it) }
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
     }
 }
-//val type ENUM
-
 enum class TypeENUM{
     CAMERA,
     MICROPHONE,
     MOUSE,
     KEYBOARD
 }
-open class Model(val id: Int, val name: String, val image: Int, type: TypeENUM){
-    companion object{
-        fun addDevice(id: Int, name: String, type: TypeENUM): Model{
-            return when(type){
-                TypeENUM.CAMERA -> Camera(id, name, R.drawable.ic_action_name)
-                TypeENUM.MICROPHONE -> Microphone(id, name, R.drawable.ic_microphone)
-                TypeENUM.MOUSE -> Mouse(id, name, R.drawable.ic_mouse)
-                TypeENUM.KEYBOARD -> Keyboard(id, name, R.drawable.ic_keyboard)
-            }
-        }
-    }
-}
+open class Model(val id: Int, val name: String, val image: Int)
 
 class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Model?>(context, 0, list as List<Model?>){
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -152,8 +172,6 @@ class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Mo
         }
 
         val model: Model? = getItem(position)
-
-        //novo
         val image = itemView!!.findViewById<ImageView>(R.id.active)
 
         val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
@@ -174,14 +192,10 @@ class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Mo
     }
 }
 
-class Microphone(id: Int, name: String, model: Int,) : Model(id, name, model, TypeENUM.MICROPHONE){
-}
+class Microphone(id: Int, name: String, model: Int,) : Model(id, name, model)
 
-class Camera(id: Int,name: String, model: Int) : Model(id, name, model, TypeENUM.CAMERA){
-}
+class Camera(id: Int,name: String, model: Int) : Model(id, name, model)
 
-class Keyboard(id: Int,name: String, model: Int) : Model(id, name, model, TypeENUM.KEYBOARD){
-}
+class Keyboard(id: Int,name: String, model: Int) : Model(id, name, model)
 
-class Mouse(id: Int,name: String, model: Int) : Model(id, name, model, TypeENUM.MOUSE){
-}
+class Mouse(id: Int,name: String, model: Int) : Model(id, name, model)

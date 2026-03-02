@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MouseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,46 +28,33 @@ class MouseActivity : AppCompatActivity() {
             image.setImageResource(R.drawable.red)
         }
 
-        when(deviceName) {
+        toggleMouseButton.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Mouse Control")
+                .setMessage("Do you want to toggle this mouse?")
+                .setPositiveButton("Yes") { _, _ ->
 
-            "Mouse","Mouse 2","Mouse 3" -> {
-                toggleMouseButton.setOnClickListener {
-                    AlertDialog.Builder(this)
-                        .setTitle("Mouse Control")
-                        .setMessage("Do you want to toggle this mouse?")
-                        .setPositiveButton("Yes") { _, _ ->
+                    isOn = !isOn
+                    val edit = preferences.edit()
 
-                            isOn = !isOn
-                            val edit = preferences.edit()
-
-                            if(isOn){
-                                if(deviceName == "Mouse"){
-                                    edit.putBoolean("Mouse 2", false)
-                                    edit.putBoolean("Mouse 3", false)
-                                }
-
-                                if(deviceName == "Mouse 2"){
-                                    edit.putBoolean("Mouse", false)
-                                    edit.putBoolean("Mouse 3", false)
-                                }
-
-                                if(deviceName == "Mouse 3"){
-                                    edit.putBoolean("Mouse", false)
-                                    edit.putBoolean("Mouse 2", false)
-                                }
-                            }
-
-                            edit.putBoolean(deviceName, isOn).apply()
-
-                            if(isOn){
-                                image.setImageResource(R.drawable.green)
-                            }else{
-                                image.setImageResource(R.drawable.red)
+                    if(isOn){
+                        val allPreferences = preferences.all
+                        for ((key, value) in allPreferences){
+                            if (key != deviceName && value is Boolean){
+                                edit.putBoolean(key, false)
                             }
                         }
-                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()
+                    }
+
+                    edit.putBoolean(deviceName, isOn).apply()
+
+                    if(isOn){
+                        image.setImageResource(R.drawable.green)
+                    }else{
+                        image.setImageResource(R.drawable.red)
+                    }
                 }
-            }
+                .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()
         }
     }
 }

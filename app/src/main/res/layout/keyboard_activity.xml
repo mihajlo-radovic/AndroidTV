@@ -41,6 +41,16 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="750dp" />
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Back"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="790dp"
+        android:layout_marginBottom="480dp"
+        android:layout_marginEnd="50dp" />
+
     <ImageView
         android:id="@+id/active"
         android:layout_width="match_parent"
@@ -50,5 +60,27 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="650dp"
         android:src="@drawable/red"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/caps_lock_switch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="790dp"/>
+
+    <TextView
+        android:id="@+id/caps_lock_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Caps Lock"
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="850dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/cardview_light_background"
+        android:textStyle="bold" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

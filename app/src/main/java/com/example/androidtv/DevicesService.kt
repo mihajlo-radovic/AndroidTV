@@ -3,7 +3,6 @@ package com.example.androidtv
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -21,7 +20,7 @@ interface DevicesService {
     suspend fun createDevice(@Body device: CreateDeviceRequest): Response<Devices>
 
     @PATCH("devices/{id}/active")
-    suspend fun setActive(@Path("id") id: Int, @Body request: ActiveRequest): Response<Devices>
+    suspend fun setActive(@Path("id") id: Long, @Body request: ActiveRequest): Response<Devices>
 }
 
 data class CreateDeviceRequest(

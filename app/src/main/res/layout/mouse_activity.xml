@@ -41,6 +41,16 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="750dp" />
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Back"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="790dp"
+        android:layout_marginBottom="480dp"
+        android:layout_marginEnd="50dp" />
+
     <ImageView
         android:id="@+id/active"
         android:layout_width="match_parent"
@@ -50,5 +60,26 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="650dp"
         android:src="@drawable/red"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="200dp"
+        android:layout_marginEnd="750dp"
+        android:orientation="vertical">
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/let_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left-Right"
+            android:checked="true"/>
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/right_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right-Left"/>
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

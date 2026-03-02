@@ -41,6 +41,16 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="750dp" />
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Back"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="790dp"
+        android:layout_marginBottom="480dp"
+        android:layout_marginEnd="50dp" />
+
     <ImageView
         android:id="@+id/active"
         android:layout_width="match_parent"
@@ -50,5 +60,15 @@
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="650dp"
         android:src="@drawable/red"/>
+
+    <Spinner
+        android:id="@+id/camera_resolution"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Toggle Camera"
+        android:layout_marginTop="250dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="250dp"
+        android:layout_marginEnd="750dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

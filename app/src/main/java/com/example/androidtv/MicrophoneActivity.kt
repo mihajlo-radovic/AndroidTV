@@ -1,6 +1,7 @@
 package com.example.androidtv
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -13,6 +14,13 @@ class MicrophoneActivity : AppCompatActivity() {
         setContentView(R.layout.microphone_activity)
 
         val deviceName = intent.getStringExtra("device_name")
+
+        val backButton = findViewById<Button>(R.id.back_button)
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
         val textView = findViewById<TextView>(R.id.microphone_name)
         val toggleMicrophoneButton = findViewById<Button>(R.id.toggle_microphone_button)

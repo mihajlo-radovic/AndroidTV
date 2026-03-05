@@ -3,6 +3,38 @@ package com.example.androidtv
 
 /*
 
+old alert dialog for devices, was using shared preferences
+
+        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
+        var isOn = preferences.getBoolean(deviceName, false)
+
+        if(isOn){
+            image.setImageResource(R.drawable.green)
+        }else{
+            image.setImageResource(R.drawable.red)
+        }
+
+                    isOn = !isOn
+                    val edit = preferences.edit()
+
+                    if(isOn){
+                        val allPreferences = preferences.all
+                        for ((key, value) in allPreferences){
+                            if (key != deviceName && value is Boolean){
+                                edit.putBoolean(key, false)
+                            }
+                        }
+                    }
+
+                    edit.putBoolean(deviceName, isOn).apply()
+
+                    if(isOn){
+                        image.setImageResource(R.drawable.green)
+                    }else{
+                        image.setImageResource(R.drawable.red)
+                    }
+
+
 new old alert dialog for devices
 
         val preferences = getSharedPreferences("preferences", MODE_PRIVATE)

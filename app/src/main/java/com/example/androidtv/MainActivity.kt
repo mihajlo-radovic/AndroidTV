@@ -55,24 +55,28 @@ class MainActivity : ComponentActivity() {
 
                 is Camera -> {
                     val intent = Intent(this, CameraActivity::class.java)
+                    intent.putExtra("device_id", selectedItem.id)
                     intent.putExtra("device_name", selectedItem.name)
                     startActivity(intent)
                 }
 
                 is Microphone -> {
                     val intent = Intent(this, MicrophoneActivity::class.java)
+                    intent.putExtra("device_id", selectedItem.id)
                     intent.putExtra("device_name", selectedItem.name)
                     startActivity(intent)
                 }
 
                 is Keyboard -> {
                     val intent = Intent(this, KeyboardActivity::class.java)
+                    intent.putExtra("device_id", selectedItem.id)
                     intent.putExtra("device_name", selectedItem.name)
                     startActivity(intent)
                 }
 
                 is Mouse -> {
                     val intent = Intent(this, MouseActivity::class.java)
+                    intent.putExtra("device_id", selectedItem.id)
                     intent.putExtra("device_name", selectedItem.name)
                     startActivity(intent)
                 }
@@ -138,10 +142,10 @@ class MainActivity : ComponentActivity() {
                         list.clear()
                         for (device in apiDevices){
                             val model = when(device.type){
-                                "CAMERA" -> Camera(device.id, device.name, R.drawable.ic_action_name)
-                                "MICROPHONE" -> Microphone(device.id, device.name, R.drawable.ic_microphone)
-                                "MOUSE" -> Mouse(device.id, device.name, R.drawable.ic_mouse)
-                                "KEYBOARD" -> Keyboard(device.id, device.name, R.drawable.ic_keyboard)
+                                "CAMERA" -> Camera(device.id, device.name, R.drawable.ic_action_name, device.active)
+                                "MICROPHONE" -> Microphone(device.id, device.name, R.drawable.ic_microphone, device.active)
+                                "MOUSE" -> Mouse(device.id, device.name, R.drawable.ic_mouse, device.active)
+                                "KEYBOARD" -> Keyboard(device.id, device.name, R.drawable.ic_keyboard, device.active)
                                 else -> null
                             }
                             model?.let { list.add(it) }
@@ -161,7 +165,7 @@ enum class TypeENUM{
     MOUSE,
     KEYBOARD
 }
-open class Model(val id: Int, val name: String, val image: Int)
+open class Model(val id: Int, val name: String, val image: Int, var active: Boolean = false)
 
 class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Model?>(context, 0, list as List<Model?>){
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
@@ -174,10 +178,7 @@ class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Mo
         val model: Model? = getItem(position)
         val image = itemView!!.findViewById<ImageView>(R.id.active)
 
-        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
-        val isOn = preferences.getBoolean(model!!.name, false)
-
-        if(isOn){
+        if(model!!.active){
             image.setImageResource(R.drawable.green)
         }else{
             image.setImageResource(R.drawable.red)
@@ -192,10 +193,10 @@ class GridViewAdapter(context: Context, list: ArrayList<Model>): ArrayAdapter<Mo
     }
 }
 
-class Microphone(id: Int, name: String, model: Int,) : Model(id, name, model)
+class Microphone(id: Int, name: String, model: Int, active: Boolean = false) : Model(id, name, model, active)
 
-class Camera(id: Int,name: String, model: Int) : Model(id, name, model)
+class Camera(id: Int,name: String, model: Int, active: Boolean = false) : Model(id, name, model, active)
 
-class Keyboard(id: Int,name: String, model: Int) : Model(id, name, model)
+class Keyboard(id: Int,name: String, model: Int, active: Boolean = false) : Model(id, name, model, active)
 
-class Mouse(id: Int,name: String, model: Int) : Model(id, name, model)
+class Mouse(id: Int,name: String, model: Int, active: Boolean = false) : Model(id, name, model, active)

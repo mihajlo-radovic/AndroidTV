@@ -10,9 +10,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Spacer
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +23,7 @@ class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.camera_activity)
 
         val deviceName = intent.getStringExtra("device_name")
+        val deviceId = intent.getIntExtra("device_id", -1)
 
         val backButton = findViewById<Button>(R.id.back_button)
 
@@ -41,7 +42,15 @@ class CameraActivity : AppCompatActivity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
-                Toast.makeText(this@CameraActivity, "$selectedItem", Toast.LENGTH_SHORT).show()
+
+                lifecycleScope.launch {
+                    try {
+                        val request = UpdateDeviceReq(resolution = selectedItem)
+                        DevicesClient.instance.updateDevices(deviceId, request)
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
+                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -54,13 +63,22 @@ class CameraActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
-        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
-        var isOn = preferences.getBoolean(deviceName, false)
+        var isOn = false
 
-        if(isOn){
-            image.setImageResource(R.drawable.green)
-        }else{
-            image.setImageResource(R.drawable.red)
+        lifecycleScope.launch {
+            try {
+                val response = DevicesClient.instance.getDevices()
+                val device = response.body()?.find { it.id == deviceId }
+                isOn = device?.active ?: false
+
+                if(isOn){
+                    image.setImageResource(R.drawable.green)
+                }else {
+                    image.setImageResource(R.drawable.red)
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         toggleCameraButton.setOnClickListener {
@@ -68,25 +86,23 @@ class CameraActivity : AppCompatActivity() {
                 .setTitle("Camera Control")
                 .setMessage("Do you want to toggle this camera?")
                 .setPositiveButton("Yes") { _, _ ->
+                    lifecycleScope.launch {
+                        try {
+                            val request = ActiveRequest(!isOn)
+                            val response = DevicesClient.instance.setActive(deviceId, request)
 
-                    isOn = !isOn
-                    val edit = preferences.edit()
-
-                    if(isOn){
-                        val allPreferences = preferences.all
-                        for ((key, value) in allPreferences){
-                            if (key != deviceName && value is Boolean){
-                                edit.putBoolean(key, false)
+                            if (response.isSuccessful){
+                                val updated = response.body()
+                                isOn = updated?.active ?: false
+                                if(isOn){
+                                    image.setImageResource(R.drawable.green)
+                                }else {
+                                    image.setImageResource(R.drawable.red)
+                                }
                             }
+                        }catch (e: Exception){
+                            e.printStackTrace()
                         }
-                    }
-
-                    edit.putBoolean(deviceName, isOn).apply()
-
-                    if(isOn){
-                        image.setImageResource(R.drawable.green)
-                    }else{
-                        image.setImageResource(R.drawable.red)
                     }
                 }
                 .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()

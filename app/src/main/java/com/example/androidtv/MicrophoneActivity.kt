@@ -7,6 +7,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.slider.Slider
+import kotlinx.coroutines.launch
 
 class MicrophoneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +17,7 @@ class MicrophoneActivity : AppCompatActivity() {
         setContentView(R.layout.microphone_activity)
 
         val deviceName = intent.getStringExtra("device_name")
+        val deviceId = intent.getIntExtra("device_id", -1)
 
         val backButton = findViewById<Button>(R.id.back_button)
 
@@ -27,13 +31,35 @@ class MicrophoneActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
-        val preferences = getSharedPreferences("preferences", MODE_PRIVATE)
-        var isOn = preferences.getBoolean(deviceName, false)
+        val volumeSlider = findViewById<Slider>(R.id.slider)
 
-        if(isOn){
-            image.setImageResource(R.drawable.green)
-        }else{
-            image.setImageResource(R.drawable.red)
+        volumeSlider.addOnChangeListener {_, value, _ ->
+            lifecycleScope.launch {
+                try {
+                    val request = UpdateDeviceReq(volume = value.toInt())
+                    DevicesClient.instance.updateDevices(deviceId, request)
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        var isOn = false
+
+        lifecycleScope.launch {
+            try {
+                val response = DevicesClient.instance.getDevices()
+                val device = response.body()?.find { it.id == deviceId }
+                isOn = device?.active ?: false
+
+                if(isOn){
+                    image.setImageResource(R.drawable.green)
+                }else {
+                    image.setImageResource(R.drawable.red)
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
         }
 
         toggleMicrophoneButton.setOnClickListener {
@@ -41,25 +67,23 @@ class MicrophoneActivity : AppCompatActivity() {
                 .setTitle("Microphone Control")
                 .setMessage("Do you want to toggle this microphone?")
                 .setPositiveButton("Yes") { _, _ ->
+                    lifecycleScope.launch {
+                        try {
+                            val request = ActiveRequest(!isOn)
+                            val response = DevicesClient.instance.setActive(deviceId, request)
 
-                    isOn = !isOn
-                    val edit = preferences.edit()
-
-                    if(isOn){
-                        val allPreferences = preferences.all
-                        for ((key, value) in allPreferences){
-                            if (key != deviceName && value is Boolean){
-                                edit.putBoolean(key, false)
+                            if (response.isSuccessful){
+                                val updated = response.body()
+                                isOn = updated?.active ?: false
+                                if(isOn){
+                                    image.setImageResource(R.drawable.green)
+                                }else {
+                                    image.setImageResource(R.drawable.red)
+                                }
                             }
+                        }catch (e: Exception){
+                            e.printStackTrace()
                         }
-                    }
-
-                    edit.putBoolean(deviceName, isOn).apply()
-
-                    if(isOn){
-                        image.setImageResource(R.drawable.green)
-                    }else{
-                        image.setImageResource(R.drawable.red)
                     }
                 }
                 .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }.show()

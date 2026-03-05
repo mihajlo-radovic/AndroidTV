@@ -9,10 +9,6 @@ import retrofit2.http.Path
 
 interface DevicesService {
 
-//    @Headers(
-//        "Content-Type: application/json",
-//        "{\"name\":\"Camera 1\",\"type\":\"CAMERA\"}"
-//    )
     @GET("devices")
     suspend fun getDevices(): Response<List<Devices>>
 
@@ -20,7 +16,10 @@ interface DevicesService {
     suspend fun createDevice(@Body device: CreateDeviceRequest): Response<Devices>
 
     @PATCH("devices/{id}/active")
-    suspend fun setActive(@Path("id") id: Long, @Body request: ActiveRequest): Response<Devices>
+    suspend fun setActive(@Path("id") id: Int, @Body request: ActiveRequest): Response<Devices>
+
+    @PATCH("devices/{id}")
+    suspend fun updateDevices(@Path("id") id: Int, @Body req: UpdateDeviceReq): Response<Devices>
 }
 
 data class CreateDeviceRequest(
@@ -30,4 +29,11 @@ data class CreateDeviceRequest(
 
 data class ActiveRequest(
     val active: Boolean
+)
+
+data class UpdateDeviceReq(
+    val resolution: String? = null,
+    val capsLock: Boolean? = null,
+    val volume: Int? = null,
+    val orientation: String? = null
 )

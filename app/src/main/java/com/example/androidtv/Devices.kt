@@ -5,6 +5,10 @@ data class Devices(
     val name: String,
     val type: String,
     val active: Boolean,
+    val resolution: String?,
+    val capsLock: Boolean?,
+    val volume: Int?,
+    val orientation: String?,
     val createdAt: String,
     val updatedAt: String
 )

@@ -1,7 +1,9 @@
 package com.example.androidtv
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,6 +18,13 @@ class SettingsActivity : AppCompatActivity() {
 
         val versionTextView: TextView = findViewById(R.id.app_version)
         versionTextView.text = "Version: $versionName"
+
+        val backButton = findViewById<Button>(R.id.back_button)
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

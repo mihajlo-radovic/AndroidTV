@@ -9,68 +9,67 @@
 
     <TextView
         android:id="@+id/mouse_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="480dp"
-        android:layout_marginEnd="600dp"
         android:text="Mouse"
         android:textColor="@color/cardview_light_background"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/enable_mouse"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/mouse_name"
+        app:layout_constraintStart_toStartOf="@id/mouse_name"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="390dp"
-        android:layout_marginEnd="600dp"
         android:text="Enable Mouse"
         android:textColor="@color/cardview_light_background"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/toggle_mouse_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Toggle Mouse"
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="320dp"
-        android:layout_marginEnd="750dp" />
-
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Back"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="790dp"
-        android:layout_marginBottom="480dp"
-        android:layout_marginEnd="50dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/enable_mouse"
+        app:layout_constraintStart_toStartOf="@id/enable_mouse"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Mouse" />
 
     <ImageView
         android:id="@+id/active"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="180dp"
-        android:layout_marginStart="250dp"
-        android:layout_marginBottom="320dp"
-        android:layout_marginEnd="650dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toEndOf="@id/toggle_mouse_button"
+        app:layout_constraintTop_toBottomOf="@id/enable_mouse"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
         android:src="@drawable/red"/>
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"/>
+
     <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="250dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="200dp"
-        android:layout_marginEnd="750dp"
+        android:id="@+id/orientation_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toggle_mouse_button"
+        app:layout_constraintStart_toStartOf="@id/toggle_mouse_button"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
         <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/let_right"
+            android:id="@+id/left_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Left-Right"

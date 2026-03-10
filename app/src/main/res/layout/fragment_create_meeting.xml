@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants"
+    tools:context=".CreateMeeting">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/create_text_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Create a code for the meeting"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+    <Button
+        android:id="@+id/create_meeting_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+</FrameLayout>

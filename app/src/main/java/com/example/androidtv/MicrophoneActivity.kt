@@ -48,7 +48,7 @@ class MicrophoneActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = DevicesClient.instance.getDevices()
+                val response = DevicesClient.instance.getDevices("")
                 val device = response.body()?.find { it.id == deviceId }
                 isOn = device?.active ?: false
 

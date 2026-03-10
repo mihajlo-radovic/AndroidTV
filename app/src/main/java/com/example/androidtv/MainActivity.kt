@@ -17,6 +17,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import kotlinx.coroutines.launch
@@ -45,6 +46,29 @@ class MainActivity : ComponentActivity() {
 
         val addButton = findViewById<Button>(R.id.add_device)
         addButton.setOnClickListener { addDeviceDialog() }
+
+        val meetingButton = findViewById<Button>(R.id.meeting_button)
+
+        meetingButton.setOnClickListener {
+            val intent = Intent(this, MeetingActivity::class.java)
+            startActivity(intent)
+        }
+
+        val searchView = findViewById<SearchView>(R.id.search_devices)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                fetchDevices(query.orEmpty())
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                fetchDevices(text.orEmpty())
+                return true
+            }
+        })
 
         fetchDevices()
 
@@ -131,10 +155,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    fun fetchDevices(){
+    fun fetchDevices(searchInput: String = ""){
         lifecycleScope.launch {
             try {
-                val response = DevicesClient.instance.getDevices()
+                val query = if (searchInput.isEmpty()) null else searchInput
+                val response = DevicesClient.instance.getDevices(query)
                 if (response.isSuccessful) {
                     val apiDevices = response.body()
 

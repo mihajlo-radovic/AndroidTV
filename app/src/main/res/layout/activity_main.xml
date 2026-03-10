@@ -45,6 +45,18 @@
         app:icon="@drawable/ic_plus"
         tools:listItem="@layout/popup_menu"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/meeting_button"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/add_device"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="Meeting"
+        app:icon="@drawable/ic_meeting"/>
+
     <SearchView
         android:id="@+id/search_devices"
         android:layout_width="400dp"

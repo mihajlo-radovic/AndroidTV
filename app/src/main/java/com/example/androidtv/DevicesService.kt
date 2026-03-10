@@ -6,11 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface DevicesService {
 
     @GET("devices")
-    suspend fun getDevices(): Response<List<Devices>>
+    suspend fun getDevices(@Query("searchInput") searchInput: String?): Response<List<Devices>>
 
     @POST("devices")
     suspend fun createDevice(@Body device: CreateDeviceRequest): Response<Devices>

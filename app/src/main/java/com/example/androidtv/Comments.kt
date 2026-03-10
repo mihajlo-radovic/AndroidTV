@@ -3,6 +3,58 @@ package com.example.androidtv
 
 /*
 
+old meeting activity
+class MeetingActivity : AppCompatActivity(){
+
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager2: ViewPager2
+    private lateinit var adapter: FragmentPageAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.meeting_activity)
+
+        tabLayout = findViewById(R.id.tab_layout)
+        viewPager2 = findViewById(R.id.view_pager)
+
+        adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
+
+        viewPager2.adapter = adapter
+        viewPager2.isUserInputEnabled = false
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null){
+                    viewPager2.currentItem = tab.position
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
+
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tabLayout.selectTab(tabLayout.getTabAt(position))
+            }
+        })
+
+        val backButton = findViewById<Button>(R.id.back_button)
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+}
+
+
 old alert dialog for devices, was using shared preferences
 
         val preferences = getSharedPreferences("preferences", MODE_PRIVATE)

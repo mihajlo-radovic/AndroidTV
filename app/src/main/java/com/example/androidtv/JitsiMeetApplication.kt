@@ -13,7 +13,7 @@ class JitsiMeetApplication : Application() {
 
         val defaultOptions = JitsiMeetConferenceOptions.Builder()
             .setServerURL(serverURL)
-            .setFeatureFlag("welcomepage.enabled", false)
+            .setFeatureFlag("welcomepage.enabled", true)
             .build()
 
         JitsiMeet.setDefaultConferenceOptions(defaultOptions)

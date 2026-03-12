@@ -6,15 +6,15 @@
 
     <TextView
         android:id="@+id/meeting_text"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="15dp"
         android:layout_marginStart="40dp"
         android:gravity="center"
         android:text="Meetings"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/cardview_dark_background"
         android:textStyle="bold" />
 
     <Button
@@ -51,7 +51,7 @@
         android:layout_height="0dp"
         android:descendantFocusability="afterDescendants"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout"
-        app:layout_constraintTop_toBottomOf="@+id/meeting_text"
+        app:layout_constraintTop_toBottomOf="@+id/back_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

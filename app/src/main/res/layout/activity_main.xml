@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/home_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,51 +15,52 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="Available devices"
         android:gravity="center"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/cardview_dark_background"
         android:textStyle="bold"
         android:paddingStart="16dp"
-        android:paddingTop="20dp"/>
+        android:paddingTop="15dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settings_button"
-        android:layout_width="70dp"
+        android:layout_width="110dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:contentDescription="Open Settings"
-        app:icon="@drawable/ic_settings" />
+        android:text="Settings" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/add_device"
-        android:layout_width="70dp"
+        android:layout_width="130dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/settings_button"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:contentDescription="Add new device"
-        app:icon="@drawable/ic_plus"
+        android:text="New device"
+        android:textAlignment="center"
         tools:listItem="@layout/popup_menu"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/meeting_button"
-        android:layout_width="70dp"
+        android:layout_width="110dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/add_device"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="Meeting"
-        app:icon="@drawable/ic_meeting"/>
+        android:text="Meeting"/>
 
     <SearchView
         android:id="@+id/search_devices"
-        android:layout_width="400dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/home_text"

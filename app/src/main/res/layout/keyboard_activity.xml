@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/keyboard_name"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
         android:text="Keyboard"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/cardview_dark_background"
         android:textStyle="bold" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
         android:text="Enable Keyboard"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/cardview_dark_background"
         android:textStyle="bold" />
 
     <Button
@@ -69,7 +69,7 @@
         android:layout_marginTop="20dp"
         android:text="Caps Lock"
         android:gravity="center"
-        android:textColor="@color/cardview_light_background"
+        android:textColor="@color/cardview_dark_background"
         android:textStyle="bold" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Light purple background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#F0EFFE" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <!-- Centered monitor icon -->
+    <item
+        android:width="32dp"
+        android:height="32dp"
+        android:gravity="center">
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="32dp"
+            android:height="32dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:fillColor="#00000000"
+                android:strokeColor="#5B4FCF"
+                android:strokeWidth="1.5"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round"
+                android:pathData="M2,3 Q2,3 4,3 L20,3 Q22,3 22,5 L22,15 Q22,17 20,17 L4,17 Q2,17 2,15 Z" />
+            <path
+                android:fillColor="#00000000"
+                android:strokeColor="#5B4FCF"
+                android:strokeWidth="1.5"
+                android:strokeLineCap="round"
+                android:pathData="M8,21 L16,21" />
+            <path
+                android:fillColor="#00000000"
+                android:strokeColor="#5B4FCF"
+                android:strokeWidth="1.5"
+                android:strokeLineCap="round"
+                android:pathData="M12,17 L12,21" />
+        </vector>
+    </item>
+
+</layer-list>

@@ -20,32 +20,38 @@ class MouseActivity : AppCompatActivity() {
         val deviceId = intent.getIntExtra("device_id", -1)
 
         val backButton = findViewById<Button>(R.id.back_button)
+        val textView = findViewById<TextView>(R.id.mouse_name)
+        val toggleMouseButton = findViewById<Button>(R.id.toggle_mouse_button)
+        val image = findViewById<ImageView>(R.id.active)
+        val orientationGroup = findViewById<RadioGroup>(R.id.orientation_group)
+
+        val deviceIdView = findViewById<TextView>(R.id.device_id)
+        val deviceTypeView = findViewById<TextView>(R.id.device_type)
+        val lastUpdatedView = findViewById<TextView>(R.id.last_updated)
+        val deviceStatusView = findViewById<TextView>(R.id.device_status)
+        val statusBadge = findViewById<TextView>(R.id.status_badge)
+        val mouseNameCard = findViewById<TextView>(R.id.mouse_name_card)
+        val mouseAddedDate = findViewById<TextView>(R.id.mouse_added_date)
+
+        textView.text = deviceName
 
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        val textView = findViewById<TextView>(R.id.mouse_name)
-        val toggleMouseButton = findViewById<Button>(R.id.toggle_mouse_button)
-        val image = findViewById<ImageView>(R.id.active)
-        textView.text = deviceName
-
-        val orientationGroup = findViewById<RadioGroup>(R.id.orientation_group)
-
-        orientationGroup.setOnCheckedChangeListener {_, checkedId ->
-
-            val orientationValue = when(checkedId){
+        orientationGroup.setOnCheckedChangeListener { _, checkedId ->
+            val orientationValue = when (checkedId) {
                 R.id.left_right -> "LEFT_RIGHT"
                 R.id.right_left -> "RIGHT_LEFT"
                 else -> null
             }
-            if (orientationValue !=null){
+            if (orientationValue != null) {
                 lifecycleScope.launch {
                     try {
                         val request = UpdateDeviceReq(orientation = orientationValue)
                         DevicesClient.instance.updateDevices(deviceId, request)
-                    }catch (e: Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
@@ -60,12 +66,27 @@ class MouseActivity : AppCompatActivity() {
                 val device = response.body()?.find { it.id == deviceId }
                 isOn = device?.active ?: false
 
-                if(isOn){
-                    image.setImageResource(R.drawable.green)
-                }else {
-                    image.setImageResource(R.drawable.red)
+                mouseNameCard.text = device?.name ?: deviceName ?: "Mouse"
+                mouseAddedDate.text = "MOUSE · Added ${device?.createdAt?.substring(0, 10) ?: "—"}"
+                deviceIdView.text = device?.id?.toString() ?: "—"
+                deviceTypeView.text = device?.type ?: "—"
+                lastUpdatedView.text = device?.updatedAt?.substring(0, 10) ?: "—"
+
+                when (device?.orientation) {
+                    "RIGHT_LEFT" -> orientationGroup.check(R.id.right_left)
+                    else -> orientationGroup.check(R.id.left_right)
                 }
-            }catch (e: Exception){
+
+                if (isOn) {
+                    image.setImageResource(R.drawable.green)
+                    deviceStatusView.text = "Enabled"
+                    statusBadge.text = "● Active"
+                } else {
+                    image.setImageResource(R.drawable.red)
+                    deviceStatusView.text = "Disabled"
+                    statusBadge.text = "● Inactive"
+                }
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -80,16 +101,20 @@ class MouseActivity : AppCompatActivity() {
                             val request = ActiveRequest(!isOn)
                             val response = DevicesClient.instance.setActive(deviceId, request)
 
-                            if (response.isSuccessful){
+                            if (response.isSuccessful) {
                                 val updated = response.body()
                                 isOn = updated?.active ?: false
-                                if(isOn){
+                                if (isOn) {
                                     image.setImageResource(R.drawable.green)
-                                }else {
+                                    deviceStatusView.text = "Enabled"
+                                    statusBadge.text = "● Active"
+                                } else {
                                     image.setImageResource(R.drawable.red)
+                                    deviceStatusView.text = "Disabled"
+                                    statusBadge.text = "● Inactive"
                                 }
                             }
-                        }catch (e: Exception){
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     }

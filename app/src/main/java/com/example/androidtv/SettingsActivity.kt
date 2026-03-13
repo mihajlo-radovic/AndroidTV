@@ -16,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
         val versionName = packageInfo.versionName ?: "Unknown"
 
         val versionTextView: TextView = findViewById(R.id.app_version)
-        versionTextView.text = "Version: $versionName"
+        versionTextView.text = "App version: $versionName"
 
         val backButton = findViewById<Button>(R.id.back_button)
 

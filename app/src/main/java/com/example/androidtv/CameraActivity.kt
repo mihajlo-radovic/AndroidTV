@@ -26,6 +26,17 @@ class CameraActivity : AppCompatActivity() {
         val deviceId = intent.getIntExtra("device_id", -1)
 
         val backButton = findViewById<Button>(R.id.back_button)
+        val textView = findViewById<TextView>(R.id.camera_name)
+        val toggleCameraButton = findViewById<Button>(R.id.toggle_camera_button)
+        val image = findViewById<ImageView>(R.id.active)
+
+        val deviceIdView = findViewById<TextView>(R.id.device_id)
+        val deviceTypeView = findViewById<TextView>(R.id.device_type)
+        val lastUpdatedView = findViewById<TextView>(R.id.last_updated)
+        val deviceStatusView = findViewById<TextView>(R.id.device_status)
+        val statusBadge = findViewById<TextView>(R.id.status_badge)
+
+        textView.text = deviceName
 
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -34,34 +45,24 @@ class CameraActivity : AppCompatActivity() {
 
         spinner = findViewById<Spinner>(R.id.camera_resolution)
         val list = listOf("720p 30fps", "720p 60fps", "1080p 30fps", "1080p 60fps")
-
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = arrayAdapter
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedItem = parent?.getItemAtPosition(position).toString()
-
                 lifecycleScope.launch {
                     try {
                         val request = UpdateDeviceReq(resolution = selectedItem)
                         DevicesClient.instance.updateDevices(deviceId, request)
-                    }catch (e: Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-
-
-        val textView = findViewById<TextView>(R.id.camera_name)
-        val toggleCameraButton = findViewById<Button>(R.id.toggle_camera_button)
-        val image = findViewById<ImageView>(R.id.active)
-        textView.text = deviceName
 
         var isOn = false
 
@@ -71,12 +72,20 @@ class CameraActivity : AppCompatActivity() {
                 val device = response.body()?.find { it.id == deviceId }
                 isOn = device?.active ?: false
 
-                if(isOn){
+                deviceIdView.text = device?.id?.toString() ?: "-"
+                deviceTypeView.text = device?.type ?: "-"
+                lastUpdatedView.text = device?.updatedAt?.substring(0, 10) ?: "-"
+
+                if (isOn) {
                     image.setImageResource(R.drawable.green)
-                }else {
+                    deviceStatusView.text = "Enabled"
+                    statusBadge.text = "● Active"
+                } else {
                     image.setImageResource(R.drawable.red)
+                    deviceStatusView.text = "Disabled"
+                    statusBadge.text = "● Inactive"
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -90,17 +99,20 @@ class CameraActivity : AppCompatActivity() {
                         try {
                             val request = ActiveRequest(!isOn)
                             val response = DevicesClient.instance.setActive(deviceId, request)
-
-                            if (response.isSuccessful){
+                            if (response.isSuccessful) {
                                 val updated = response.body()
                                 isOn = updated?.active ?: false
-                                if(isOn){
+                                if (isOn) {
                                     image.setImageResource(R.drawable.green)
-                                }else {
+                                    deviceStatusView.text = "Enabled"
+                                    statusBadge.text = "● Active"
+                                } else {
                                     image.setImageResource(R.drawable.red)
+                                    deviceStatusView.text = "Disabled"
+                                    statusBadge.text = "● Inactive"
                                 }
                             }
-                        }catch (e: Exception){
+                        } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     }

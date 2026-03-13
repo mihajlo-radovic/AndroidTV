@@ -2,6 +2,326 @@ package com.example.androidtv
 
 
 /*
+old keyboard activity xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KeyboardActivity">
+
+    <TextView
+        android:id="@+id/keyboard_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:text="Keyboard"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/enable_keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/keyboard_name"
+        app:layout_constraintStart_toStartOf="@id/keyboard_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:text="Enable Keyboard"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/toggle_keyboard_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/enable_keyboard"
+        app:layout_constraintStart_toStartOf="@id/enable_keyboard"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Keyboard" />
+
+    <ImageView
+        android:id="@+id/active"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toEndOf="@id/toggle_keyboard_button"
+        app:layout_constraintTop_toBottomOf="@id/enable_keyboard"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/red"/>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"/>
+
+    <TextView
+        android:id="@+id/caps_lock_text"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="@id/toggle_keyboard_button"
+        app:layout_constraintTop_toBottomOf="@id/toggle_keyboard_button"
+        android:layout_marginTop="20dp"
+        android:text="Caps Lock"
+        android:gravity="center"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/caps_lock_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toEndOf="@id/caps_lock_text"
+        app:layout_constraintTop_toBottomOf="@id/toggle_keyboard_button"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+old mouse activity xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MouseActivity">
+
+    <TextView
+        android:id="@+id/mouse_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:text="Mouse"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/enable_mouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/mouse_name"
+        app:layout_constraintStart_toStartOf="@id/mouse_name"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="40dp"
+        android:text="Enable Mouse"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/toggle_mouse_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/enable_mouse"
+        app:layout_constraintStart_toStartOf="@id/enable_mouse"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Mouse" />
+
+    <ImageView
+        android:id="@+id/active"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toEndOf="@id/toggle_mouse_button"
+        app:layout_constraintTop_toBottomOf="@id/enable_mouse"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/red"/>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"/>
+
+    <RadioGroup
+        android:id="@+id/orientation_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toggle_mouse_button"
+        app:layout_constraintStart_toStartOf="@id/toggle_mouse_button"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/left_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left-Right"
+            android:checked="true"/>
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/right_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right-Left"/>
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+old microphone activity xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MicrophoneActivity">
+
+    <TextView
+        android:id="@+id/microphone_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:text="Microphone"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/enable_microphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/microphone_name"
+        app:layout_constraintStart_toStartOf="@id/microphone_name"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="40dp"
+        android:text="Enable Microphone"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/toggle_microphone_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/enable_microphone"
+        app:layout_constraintStart_toStartOf="@id/enable_microphone"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Microphone" />
+
+    <ImageView
+        android:id="@+id/active"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toEndOf="@id/toggle_microphone_button"
+        app:layout_constraintTop_toBottomOf="@id/enable_microphone"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/red"/>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"/>
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@id/toggle_microphone_button"
+        app:layout_constraintStart_toStartOf="@id/toggle_microphone_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="-13dp"
+        android:valueFrom="0"
+        android:valueTo="100"
+        android:stepSize="10"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+old camera activity xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CameraActivity">
+
+    <TextView
+        android:id="@+id/camera_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:text="Camera"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/enable_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/camera_name"
+        app:layout_constraintStart_toStartOf="@id/camera_name"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="40dp"
+        android:text="Enable Camera"
+        android:textColor="@color/cardview_dark_background"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/toggle_camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/enable_camera"
+        app:layout_constraintStart_toStartOf="@id/enable_camera"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Camera" />
+
+    <ImageView
+        android:id="@+id/active"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toEndOf="@id/toggle_camera_button"
+        app:layout_constraintTop_toBottomOf="@id/enable_camera"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/red"/>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"/>
+
+    <Spinner
+        android:id="@+id/camera_resolution"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="@id/toggle_camera_button"
+        app:layout_constraintTop_toBottomOf="@id/toggle_camera_button"
+        android:layout_marginTop="10dp"
+        android:text="Toggle Camera"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 
 old meeting activity
 class MeetingActivity : AppCompatActivity(){

@@ -31,6 +31,14 @@ class MicrophoneActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.active)
         textView.text = deviceName
 
+        val deviceIdView = findViewById<TextView>(R.id.device_id)
+        val deviceTypeView = findViewById<TextView>(R.id.device_type)
+        val lastUpdatedView = findViewById<TextView>(R.id.last_updated)
+        val deviceStatusView = findViewById<TextView>(R.id.device_status)
+        val statusBadge = findViewById<TextView>(R.id.status_badge)
+        val microphoneNameCard = findViewById<TextView>(R.id.microphone_name_card)
+        val microphoneAddedDate = findViewById<TextView>(R.id.microphone_added_date)
+
         val volumeSlider = findViewById<Slider>(R.id.slider)
 
         volumeSlider.addOnChangeListener {_, value, _ ->
@@ -52,10 +60,22 @@ class MicrophoneActivity : AppCompatActivity() {
                 val device = response.body()?.find { it.id == deviceId }
                 isOn = device?.active ?: false
 
-                if(isOn){
+                microphoneNameCard.text = device?.name ?: deviceName ?: "Microphone"
+                microphoneAddedDate.text = "MICROPHONE · Added ${device?.createdAt?.substring(0, 10) ?: "—"}"
+                deviceIdView.text = device?.id?.toString() ?: "—"
+                deviceTypeView.text = device?.type ?: "—"
+                lastUpdatedView.text = device?.updatedAt?.substring(0, 10) ?: "—"
+
+                device?.volume?.let { volumeSlider.value = it.toFloat() }
+
+                if (isOn) {
                     image.setImageResource(R.drawable.green)
-                }else {
+                    deviceStatusView.text = "Enabled"
+                    statusBadge.text = "● Active"
+                } else {
                     image.setImageResource(R.drawable.red)
+                    deviceStatusView.text = "Disabled"
+                    statusBadge.text = "● Inactive"
                 }
             }catch (e: Exception){
                 e.printStackTrace()
@@ -75,10 +95,14 @@ class MicrophoneActivity : AppCompatActivity() {
                             if (response.isSuccessful){
                                 val updated = response.body()
                                 isOn = updated?.active ?: false
-                                if(isOn){
+                                if (isOn) {
                                     image.setImageResource(R.drawable.green)
-                                }else {
+                                    deviceStatusView.text = "Enabled"
+                                    statusBadge.text = "● Active"
+                                } else {
                                     image.setImageResource(R.drawable.red)
+                                    deviceStatusView.text = "Disabled"
+                                    statusBadge.text = "● Inactive"
                                 }
                             }
                         }catch (e: Exception){
